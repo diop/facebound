@@ -57,8 +57,9 @@ def main():
             temp_img = cv2.cvtColor(new_img, 1)
             gray = cv2.cvtColor(temp_img, cv2.COLOR_BGR2GRAY)
             st.image(gray)
-            # st.write(gray)
-            # st.write(new_img)
+            # Print on screen
+            st.write(gray)
+            st.write(new_img)
 
         if enhance_type == 'Contrast':
             contrast_rate = st.sidebar.slider('Contrtast', 0.5, 3.5)
@@ -84,10 +85,10 @@ def main():
         # Face Detection
         target = ['Face', 'Smiles', 'Eyes']
         feature_choice = st.sidebar.selectbox('Find Features', target)
-        if st.button('Process'):
+        if st.button('Detect Faces'):
             if feature_choice == 'Faces':
+                st.write('Print something goda damn it!!!!')
                 result_img, result_faces = detect_faces(uploaded)
-                st.write('Print something !!!!')
                 st.image(result_img)
 
                 st.success(f'Found {len(result_faces)} faces.')
