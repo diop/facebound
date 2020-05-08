@@ -82,8 +82,8 @@ def main():
         #     st.image(uploaded)
 
         # Face Detection
-        task = ['Face', 'Smiles', 'Eyes']
-        feature_choice = st.sidebar.selectbox('Find Features', task)
+        target = ['Face', 'Smiles', 'Eyes']
+        feature_choice = st.sidebar.selectbox('Find Features', target)
         if st.button('Process'):
             if feature_choice == 'Faces':
                 result_img, result_faces = detect_faces(uploaded)
