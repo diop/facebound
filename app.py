@@ -1,13 +1,32 @@
-import streamlit as st
-import cv2
-from PIL import Image, ImageEnhance
+
+import cv2, os
 import numpy as np
-import os
+import streamlit as st
+import matplotlib.pyplot as plt
+from PIL import Image, ImageEnhance
 
 @st.cache
 def load_image(img):
     im = Image.open(img)
     return im
+
+FACE_CASCADE_PATH = '/algos/haarcascade_frontalface_default.xml'
+
+face_cascade = cv2.CascadeClassifier(FACE_CASCADE_PATH )
+# eye_cascade = cv2.CascadeClassifier('algos/haarcascade_eye.xml')
+# smile_cascade = cv2.CascadeClassifier('algos/haarcascade_smile.xml')
+
+def detect_faces(uploaded_image):
+    new_img = np.array(uploaded_image.convert('RGB'))
+    temp_img = cv2.cvtColor(new_img, 1)
+    gray = cv2.cvtColor(temp_img, cv2.COLOR_BGR2GRAY)
+    # Detect Face
+    faces = face_cascade.detectMultiScale(gray, 1.1, 4)
+    # Draw Rectangle
+    for (x,y,w,h) in faces:
+        cv2.rectangle(temp_img, (x,y), (x+w, y+h), (255,0,0), 2)
+
+    return temp_img, faces
 
 def main():
     '''
@@ -32,6 +51,7 @@ def main():
             st.image(uploaded)
 
         enhance_type = st.sidebar.radio('Enhance Type', ['Original', 'Grayscale', 'Contrast', 'Brightness', 'Blur'])
+
         if enhance_type == 'Grayscale':
             new_img = np.array(uploaded.convert('RGB'))
             temp_img = cv2.cvtColor(new_img, 1)
@@ -58,9 +78,26 @@ def main():
             temp_img = cv2.cvtColor(new_img, 1)
             blurred = cv2.GaussianBlur(temp_img, (11,11), blur_rate)
             st.image(blurred)
+        # else:
+        #     st.image(uploaded)
+
+        # Face Detection
+        task = ['Face', 'Smiles', 'Eyes']
+        feature_choice = st.sidebar.selectbox('Find Features', task)
+        if st.button('Process'):
+            if feature_choice == 'Faces':
+                result_img, result_faces = detect_faces(uploaded)
+                st.write('Print something !!!!')
+                st.image(result_img)
+
+                st.success(f'Found {len(result_faces)} faces.')
+            
 
     elif choice == 'About':
-        st.subheader('About')
+        st.subheader('About Facebound')
+        st.markdown("Built with Streamlit and OpenCV by [Fodé Diop](https://www.github.com/diop)")
+        st.text("© Copyright 2020 Fodé Diop - MIT")
+        st.success("Dakar Institute of Technology")
 
 if __name__ == '__main__':
     main()
