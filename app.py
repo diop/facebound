@@ -10,7 +10,7 @@ def load_image(img):
     im = Image.open(img)
     return im
 
-FACE_CASCADE_PATH = '/algos/haarcascade_frontalface_default.xml'
+FACE_CASCADE_PATH = './algos/haarcascade_frontalface_default.xml'
 
 face_cascade = cv2.CascadeClassifier(FACE_CASCADE_PATH )
 # eye_cascade = cv2.CascadeClassifier('algos/haarcascade_eye.xml')
@@ -86,8 +86,7 @@ def main():
         target = ['Face', 'Smiles', 'Eyes']
         feature_choice = st.sidebar.selectbox('Find Features', target)
         if st.button('Detect Faces'):
-            if feature_choice == 'Faces':
-                st.write('Print something goda damn it!!!!')
+            if feature_choice == 'Face':
                 result_img, result_faces = detect_faces(uploaded)
                 st.image(result_img)
 
