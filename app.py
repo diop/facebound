@@ -83,10 +83,10 @@ def main():
         #     st.image(uploaded)
 
         # Face Detection
-        target = ['Face', 'Smiles', 'Eyes']
+        target = ['Faces', 'Smiles', 'Eyes']
         feature_choice = st.sidebar.selectbox('Find Features', target)
         if st.button('Detect Faces'):
-            if feature_choice == 'Face':
+            if feature_choice == 'Faces':
                 result_img, result_faces = detect_faces(uploaded)
                 st.image(result_img)
 
